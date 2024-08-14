@@ -33,12 +33,37 @@ async def cmd_start(message: Message, state: FSMContext):
     if user_id in user_histories:
         del user_histories[user_id]
     
-    await message.answer(f'Привет! Я чат-бот компании QalaEduTech.\nДля навигации воспользуйся командой /help', reply_markup=kb.main)
+    user_histories[user_id] = [{"role": "system", "content": "You are a teacher. Your user is a student. Your name is QalamAI and you can speak russian, kazakh and english. Define the subjects and topics student wants to study. Consider the age and skill level of the student. Adapt to individual student needs, such as offering additional resources or adjusting the difficulty level based on the user’s progress. If he needs to write something or solve something, don't do the work for him, but help him do it himself, through leading questions or the Socratic method of teaching. Support dialogues that promote understanding, using techniques like Socratic questioning. Implement features to quiz student, assess their knowledge, and provide feedback. Recognize the emotional state of student, for example, through sentiment analysis, and respond accordingly (e.g., offering encouragement, motivation, or breaks). If a student asks a question in particular math topic, make sure he knows the basics needed to solve his problem."}]
+    
+    await message.answer(f'Выберите язык\nТілді таңдаңыз\nSelect a language\n\nРусский /ru \nҚазақша /kz\nEnglish /en')
     await state.clear()
 
-@router.message(Command('help'))
-async def cmd_help(message: Message):
-    await message.answer(f'Я ИИ бот задачей которого отвечать на вопросы и помогать вам в обучении. Вы можете задать мне свой вопрос, а постараюсь на него ответить. Чем детальнее вы опишите вашу проблему, тем лучше я смогу вам помочь\nС чего начнем?', reply_markup=kb.settings)
+@router.message(Command('kz'))
+async def kaz_lang(message: Message):
+    user_id = message.from_user.id
+    
+    user_histories[user_id].append({"role": "system", "content": "Your student is willing to talk in kazakh"})
+    user_histories[user_id].append({"role": "assistant", "content": "Сәлем! Менің атым QalamAI. Мен бот-мұғалімімін. Сен маған сені қызықтыратын тақырыптар бойынша сұрақтар қоя аласың, ал мен саған көмектесуге тырысамын! Ботты қайта іске қосу үшін мұнда бас -> /start. Саған қалай көмектесе аламын?"})
+    
+    await message.answer('Сәлем! Менің атым QalamAI. Мен бот-мұғаліммін.\n\nСен маған сені қызықтыратын тақырыптар бойынша сұрақтар қоя аласың, ал мен саған көмектесуге тырысамын!\nБотты қайта іске қосу үшін мұнда бас -> /start.\n\nСаған қалай көмектесе аламын?')
+
+@router.message(Command('ru'))
+async def kaz_lang(message: Message):
+    user_id = message.from_user.id
+    
+    user_histories[user_id].append({"role": "system", "content": "Your student is willing to talk in russian"})
+    user_histories[user_id].append({"role": "assistant", "content": "Привет! Меня зовут QalamAI. Я бот-учитель. Ты можешь задавать мне вопросы по темам которые тебе интересны, а я тебе помогу! Чтобы перезапустить бота нажми сюда -> /start. Как я могу тебе помочь?"})
+    
+    await message.answer(f'Привет! Меня зовут QalamAI. Я бот-учитель.\n\nТы можешь задавать мне вопросы по темам которые тебе интересны, а я тебе помогу!\nЧтобы перезапустить бота нажми сюда -> /start\n\nКак я могу тебе помочь?')
+
+@router.message(Command('en'))
+async def kaz_lang(message: Message):
+    user_id = message.from_user.id
+    
+    user_histories[user_id].append({"role": "system", "content": "Your student is willing to talk in english"})
+    user_histories[user_id].append({"role": "assistant", "content": "Hi there! My name is QalamAI and I'm a bot teacher. If you have any questions about anything, please don't hesitate to ask me. I'd be happy to help! To restart the bot, click here -> /start. How can I assist you today?"})
+    
+    await message.answer(f"Hi there! My name is QalamAI and I'm a bot teacher. \n\nIf you have any questions about anything, please don't hesitate to ask me. I'd be happy to help! \nTo restart the bot, click here -> /start. \n\nHow can I assist you today?")
 
 @router.message(Generate.text)
 async def generate_error(message: Message):
@@ -51,9 +76,6 @@ async def generate(message: Message, state: FSMContext):
     
     user_id = message.from_user.id
     user_message = message.text
-    
-    if user_id not in user_histories:
-        user_histories[user_id] = []
         
     user_histories[user_id].append({"role": "user", "content": user_message})
     response = await gpt4(user_histories[user_id])
