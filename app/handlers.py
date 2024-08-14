@@ -48,7 +48,7 @@ async def kaz_lang(message: Message):
     await message.answer('Сәлем! Менің атым QalamAI. Мен бот-мұғаліммін.\n\nСен маған сені қызықтыратын тақырыптар бойынша сұрақтар қоя аласың, ал мен саған көмектесуге тырысамын!\nБотты қайта іске қосу үшін мұнда бас -> /start.\n\nСаған қалай көмектесе аламын?')
 
 @router.message(Command('ru'))
-async def kaz_lang(message: Message):
+async def rus_lang(message: Message):
     user_id = message.from_user.id
     
     user_histories[user_id].append({"role": "system", "content": "Your student is willing to talk in russian"})
@@ -57,7 +57,7 @@ async def kaz_lang(message: Message):
     await message.answer(f'Привет! Меня зовут QalamAI. Я бот-учитель.\n\nТы можешь задавать мне вопросы по темам которые тебе интересны, а я тебе помогу!\nЧтобы перезапустить бота нажми сюда -> /start\n\nКак я могу тебе помочь?')
 
 @router.message(Command('en'))
-async def kaz_lang(message: Message):
+async def eng_lang(message: Message):
     user_id = message.from_user.id
     
     user_histories[user_id].append({"role": "system", "content": "Your student is willing to talk in english"})
