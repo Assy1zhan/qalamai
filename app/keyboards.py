@@ -1,11 +1,10 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 
-main = ReplyKeyboardMarkup(keyboard=[
-        [KeyboardButton(text='Кнопка 1')],
-        [KeyboardButton(text='Кнопка 2'), KeyboardButton(text='Еще кнопка')]
+menu = ReplyKeyboardMarkup(keyboard=[
+        [KeyboardButton(text='Меню предметов для изучения')]
     ], 
     resize_keyboard=True,
-    input_field_placeholder='Выберите пункт меню'
+    input_field_placeholder='Введите ваш запрос или просмотрите меню'
 )
 
 settings = InlineKeyboardMarkup(inline_keyboard=[
