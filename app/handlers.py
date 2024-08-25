@@ -41,7 +41,7 @@ async def cmd_start(message: Message, state: FSMContext):
     await message.answer(f'Выберите язык\nТілді таңдаңыз\nSelect a language', reply_markup=kb.lang)
     await state.clear()
 
-@router.message(F.data == 'kazakh_lang')
+@router.callback_query(F.data == 'kazakh_lang')
 async def kaz_lang(callback: CallbackQuery):
     user_id = callback.from_user.id
     
@@ -50,7 +50,7 @@ async def kaz_lang(callback: CallbackQuery):
     
     await callback.message.answer(f'Сәлем! Менің атым QalamAI. Мен бот-мұғаліммін. \n\nЕгер сізде кез келген нәрсе туралы сұрақтарыңыз болса, маған қоя аласыз, ал мен сізге көмектесуге тырысамын. \nБотты қайта іске қосу үшін осында басыңыз -> /start.\n\nСізге қалай көмектесе аламын?')
 
-@router.message(F.data == 'russian_lang')
+@router.callback_query(F.data == 'russian_lang')
 async def rus_lang(callback: CallbackQuery):
     user_id = callback.from_user.id
     
@@ -59,7 +59,7 @@ async def rus_lang(callback: CallbackQuery):
     
     await callback.message.answer(f'Привет! Меня зовут QalamAI. Я бот-учитель.\n\nТы можешь задавать мне вопросы по темам которые тебе интересны, а я тебе помогу!\nЧтобы перезапустить бота нажми сюда -> /start\n\nКак я могу тебе помочь?')
 
-@router.message(F.data == 'english_lang')
+@router.callback_query(F.data == 'english_lang')
 async def eng_lang(callback: CallbackQuery):
     user_id = callback.from_user.id
     
