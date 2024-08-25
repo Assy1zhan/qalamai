@@ -38,10 +38,10 @@ async def cmd_start(message: Message, state: FSMContext):
     user_histories[user_id].append({"role": "system", "content": "When a user asks a question like 'what is...' don't give him an answer right away. First ask him questions to understand his level of knowledge. And then, using the Socratic method of teaching, gradually explain the topic to him."})
     user_histories[user_id].append({"role": "system", "content": "When you and a student are working on a piece of writing and you see that something in their writing could be improved, such as replacing some words with synonyms or changing the wording to sound better, help them. But don't write for them or tell them directly what to add or change, but guide them so that they can figure out how to improve their writing themselves."})
     
-    await message.answer(f'Выберите язык\nТілді таңдаңыз\nSelect a language\n\nРусский /ru \nҚазақша /kz\nEnglish /en')
+    await message.answer(f'Выберите язык\nТілді таңдаңыз\nSelect a language', reply_markup=kb.lang)
     await state.clear()
 
-@router.message(Command('kz'))
+@router.message(F.data == 'kazakh_lang')
 async def kaz_lang(message: Message):
     user_id = message.from_user.id
     
@@ -50,7 +50,7 @@ async def kaz_lang(message: Message):
     
     await message.answer(f'Сәлем! Менің атым QalamAI. Мен бот-мұғаліммін. \n\nЕгер сізде кез келген нәрсе туралы сұрақтарыңыз болса, маған қоя аласыз, ал мен сізге көмектесуге тырысамын. \nБотты қайта іске қосу үшін осында басыңыз -> /start.\n\nСізге қалай көмектесе аламын?')
 
-@router.message(Command('ru'))
+@router.message(F.data == 'russian_lang')
 async def rus_lang(message: Message):
     user_id = message.from_user.id
     
@@ -59,7 +59,7 @@ async def rus_lang(message: Message):
     
     await message.answer(f'Привет! Меня зовут QalamAI. Я бот-учитель.\n\nТы можешь задавать мне вопросы по темам которые тебе интересны, а я тебе помогу!\nЧтобы перезапустить бота нажми сюда -> /start\n\nКак я могу тебе помочь?')
 
-@router.message(Command('en'))
+@router.message(F.data == 'english_lang')
 async def eng_lang(message: Message):
     user_id = message.from_user.id
     

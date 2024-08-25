@@ -1,13 +1,8 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 
-menu = ReplyKeyboardMarkup(keyboard=[
-        [KeyboardButton(text='Меню предметов для изучения')]
-    ], 
-    resize_keyboard=True,
-    input_field_placeholder='Введите ваш запрос или просмотрите меню'
+lang = InlineKeyboardMarkup(keyboard=[
+        [InlineKeyboardButton(text='Русский', callback_data='russian_lang')],
+        [InlineKeyboardButton(text='Қазақша', callback_data='kazakh_lang')],
+        [InlineKeyboardButton(text='English', callback_data='english_lang')]
+    ]
 )
-
-settings = InlineKeyboardMarkup(inline_keyboard=[
-    [InlineKeyboardButton(text='кнопка', url='https://youtube.com')],
-    [InlineKeyboardButton(text='еще кнопка', url='https://youtube.com')]
-])
