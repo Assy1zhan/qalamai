@@ -1,4 +1,4 @@
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 from aiogram import Router, F
 from aiogram.filters import CommandStart, Command
 import openai
@@ -42,31 +42,31 @@ async def cmd_start(message: Message, state: FSMContext):
     await state.clear()
 
 @router.message(F.data == 'kazakh_lang')
-async def kaz_lang(message: Message):
-    user_id = message.from_user.id
+async def kaz_lang(callback: CallbackQuery):
+    user_id = callback.from_user.id
     
     user_histories[user_id].append({"role": "system", "content": "Your student is willing to talk in kazakh"})
     user_histories[user_id].append({"role": "assistant", "content": "Сәлем! Менің атым QalamAI. Мен бот-мұғаліммін. Егер сізде кез келген нәрсе туралы сұрақтарыңыз болса, маған қоя аласыз, ал мен сізге көмектесуге тырысамын. Ботты қайта іске қосу үшін осында басыңыз -> /start. Сізге қалай көмектесе аламын?"})
     
-    await message.answer(f'Сәлем! Менің атым QalamAI. Мен бот-мұғаліммін. \n\nЕгер сізде кез келген нәрсе туралы сұрақтарыңыз болса, маған қоя аласыз, ал мен сізге көмектесуге тырысамын. \nБотты қайта іске қосу үшін осында басыңыз -> /start.\n\nСізге қалай көмектесе аламын?')
+    await callback.message.answer(f'Сәлем! Менің атым QalamAI. Мен бот-мұғаліммін. \n\nЕгер сізде кез келген нәрсе туралы сұрақтарыңыз болса, маған қоя аласыз, ал мен сізге көмектесуге тырысамын. \nБотты қайта іске қосу үшін осында басыңыз -> /start.\n\nСізге қалай көмектесе аламын?')
 
 @router.message(F.data == 'russian_lang')
-async def rus_lang(message: Message):
-    user_id = message.from_user.id
+async def rus_lang(callback: CallbackQuery):
+    user_id = callback.from_user.id
     
     user_histories[user_id].append({"role": "system", "content": "Your student is willing to talk in russian"})
     user_histories[user_id].append({"role": "assistant", "content": "Привет! Меня зовут QalamAI. Я бот-учитель. Ты можешь задавать мне вопросы по темам которые тебе интересны, а я тебе помогу! Чтобы перезапустить бота нажми сюда -> /start. Как я могу тебе помочь?"})
     
-    await message.answer(f'Привет! Меня зовут QalamAI. Я бот-учитель.\n\nТы можешь задавать мне вопросы по темам которые тебе интересны, а я тебе помогу!\nЧтобы перезапустить бота нажми сюда -> /start\n\nКак я могу тебе помочь?')
+    await callback.message.answer(f'Привет! Меня зовут QalamAI. Я бот-учитель.\n\nТы можешь задавать мне вопросы по темам которые тебе интересны, а я тебе помогу!\nЧтобы перезапустить бота нажми сюда -> /start\n\nКак я могу тебе помочь?')
 
 @router.message(F.data == 'english_lang')
-async def eng_lang(message: Message):
-    user_id = message.from_user.id
+async def eng_lang(callback: CallbackQuery):
+    user_id = callback.from_user.id
     
     user_histories[user_id].append({"role": "system", "content": "Your student is willing to talk in english"})
     user_histories[user_id].append({"role": "assistant", "content": "Hi there! My name is QalamAI and I'm a bot teacher. If you have any questions about anything, please don't hesitate to ask me. I'd be happy to help! To restart the bot, click here -> /start. How can I assist you today?"})
     
-    await message.answer(f"Hi there! My name is QalamAI and I'm a bot teacher. \n\nIf you have any questions about anything, please don't hesitate to ask me. I'd be happy to help! \nTo restart the bot, click here -> /start. \n\nHow can I assist you today?")
+    await callback.message.answer(f"Hi there! My name is QalamAI and I'm a bot teacher. \n\nIf you have any questions about anything, please don't hesitate to ask me. I'd be happy to help! \nTo restart the bot, click here -> /start. \n\nHow can I assist you today?")
 
 @router.message(Generate.text)
 async def generate_error(message: Message):
