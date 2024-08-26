@@ -83,7 +83,7 @@ async def teacher(callback: CallbackQuery):
     user_histories[user_id].append({"role": "system", "content": "Your user is a teacher. As a professional teacher help them by giving valuable advices and suggestions on their problems."})
     user_histories[user_id].append({"role": "system", "content": "when you are trying to use inline expressions, it doesn't work. Do not use them"})
     
-    await Message.answer('test1')
+    await callback.answer('test')
     
 
 @router.message(Generate.text)
