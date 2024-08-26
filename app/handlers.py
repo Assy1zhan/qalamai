@@ -79,14 +79,14 @@ async def student(callback: CallbackQuery):
     user_histories[user_id].append({"role": "system", "content": "When student asks a question like 'what is...' don't give the answer right away. First ask them questions to understand his/her level of knowledge. And then, using the Socratic method of teaching, gradually explain the topic to them."})
     user_histories[user_id].append({"role": "system", "content": "When you and a student are working on a piece of writing and you see that something in their writing could be improved, such as replacing some words with synonyms or changing the wording to sound better, help them. But don't write for them or tell them directly what to add or change, but guide them so that they can figure out how to improve their writing themselves by asking questions like 'what do you think can be improve in this sentence', or 'try to paraphrase this sentence to make it sound more formal', etc."})
     
-    bot_rep
+    bot_rep = ""
     
     if user_lang[user_id] == 1:
-        bot_rep = 'Напиши пожалуйста в каком ты классе и какой предмет/тему ты хочешь обсудить.'
+        bot_rep = "Напиши пожалуйста в каком ты классе и какой предмет/тему ты хочешь обсудить."
     elif user_lang[user_id] == 2:
-        bot_rep = 'Қай сыныпта екеніңді және қандай пәнді/тақырыпты талқылағың келетінін жаз.'
+        bot_rep = "Қай сыныпта екеніңді және қандай пәнді/тақырыпты талқылағың келетінін жаз."
     else:
-        bot_rep = 'Please write down which class you are in and what subject/topic you want to discuss.'
+        bot_rep = "Please write down which class you are in and what subject/topic you want to discuss."
     
     user_histories[user_id].append({"role": "assistant", "content": bot_rep})
     await callback.message.answer(bot_rep)
@@ -98,17 +98,17 @@ async def teacher(callback: CallbackQuery):
     user_histories[user_id].append({"role": "system", "content": "Your user is a teacher. As a professional teacher help them by giving valuable advices and suggestions on their problems."})
     user_histories[user_id].append({"role": "system", "content": "when you are trying to use inline expressions, it doesn't work. Do not use them"})
     
-    bot_rep
+    bot_rep = ""
     
     if user_lang[user_id] == 1:
-        bot_rep = 'Опишите максимально детально вашу проблему/ситуацию/вопрос, чтобы я мог дать вам наиболее точный ответ.'
+        bot_rep = "Опишите максимально детально вашу проблему/ситуацию/вопрос, чтобы я мог дать вам наиболее точный ответ."
     elif user_lang[user_id] == 2:
-        bot_rep = 'Мәселеңізді, жағдайыңызды немесе сұрағыңызды мүмкіндігінше толықтай сипаттаңыз, сонда мен сізге ең нақты жауап бере аламын.'
+        bot_rep = "Мәселеңізді, жағдайыңызды немесе сұрағыңызды мүмкіндігінше толықтай сипаттаңыз, сонда мен сізге ең нақты жауап бере аламын."
     else:
-        bot_rep = 'Describe your problem/situation/question in as much detail as possible so that I can give you the most accurate answer.'
+        bot_rep = "Describe your problem/situation/question in as much detail as possible so that I can give you the most accurate answer."
     
     user_histories[user_id].append({"role": "assistant", "content": bot_rep})
-    await callback.message.answer(bot_rep)
+    await callback.message.answer(text=bot_rep)
     
 
 @router.message(Generate.text)
