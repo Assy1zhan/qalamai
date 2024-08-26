@@ -14,6 +14,7 @@ load_dotenv()
 router = Router()
 client = AsyncOpenAI(api_key=os.getenv('AI_TOKEN'))
 user_histories = {}
+user_lang = {}
 
 async def gpt4(dialog):
     response = await client.chat.completions.create(
@@ -34,6 +35,7 @@ async def cmd_start(message: Message, state: FSMContext):
         del user_histories[user_id]
     
     user_histories[user_id] = [{"role": "system", "content": "You are a teacher. You are an excellent teacher with extensive teaching experience and the skills of a competent professional. Your name is QalamAI and you can speak russian, kazakh and english."}]
+    user_lang[user_id] = 0
     
     await message.answer(f'Выберите язык\nТілді таңдаңыз\nSelect a language', reply_markup=kb.lang)
     await state.clear()
@@ -44,6 +46,7 @@ async def rus_lang(callback: CallbackQuery):
     
     user_histories[user_id].append({"role": "system", "content": "Your user is willing to talk in russian"})
     user_histories[user_id].append({"role": "assistant", "content": "Приветствую! Меня зовут QalamAI. Я бот-учитель. Вы можете задавать мне вопросы по темам которые вам интересны, а я помогу! Чтобы перезапустить бота нажмите сюда -> /start. Вы ученик или учитель?"})
+    user_lang[user_id] = 1
     
     await callback.message.answer(f'Приветствую! Меня зовут QalamAI. Я бот-учитель.\n\nВы можете задавать мне вопросы по темам которые вам интересны, а я помогу!\nЧтобы перезапустить бота нажмите сюда -> /start\n\nВы ученик или учитель?', reply_markup=kb.roles_rus)
 
@@ -53,6 +56,7 @@ async def kaz_lang(callback: CallbackQuery):
     
     user_histories[user_id].append({"role": "system", "content": "Your user is willing to talk in kazakh"})
     user_histories[user_id].append({"role": "assistant", "content": "Сәлеметсіз бе! Менің атым QalamAI. Мен бот-мұғаліммін. Егер сізде кез келген нәрсе туралы сұрақтарыңыз болса, маған қоя аласыз, ал мен сізге көмектесуге тырысамын. Ботты қайта іске қосу үшін осында басыңыз -> /start. Сіз оқушысыз ба, әлде мұғалімсіз бе?"})
+    user_lang[user_id] = 2
     
     await callback.message.answer(f'Сәлеметсіз бе! Менің атым QalamAI. Мен бот-мұғаліммін. \n\nЕгер сізде кез келген нәрсе туралы сұрақтарыңыз болса, маған қоя аласыз, ал мен сізге көмектесуге тырысамын. \nБотты қайта іске қосу үшін осында басыңыз -> /start.\n\nСіз оқушысыз ба, әлде мұғалімсіз бе?', reply_markup=kb.roles_kaz)
 
@@ -62,6 +66,7 @@ async def eng_lang(callback: CallbackQuery):
     
     user_histories[user_id].append({"role": "system", "content": "Your user is willing to talk in english"})
     user_histories[user_id].append({"role": "assistant", "content": "Hi there! My name is QalamAI and I'm a bot teacher. If you have any questions about anything, please don't hesitate to ask me. I'd be happy to help! To restart the bot, click here -> /start. Are you a student or a teacher?"})
+    user_lang[user_id] = 3
     
     await callback.message.answer(f"Hi there! My name is QalamAI and I'm a bot teacher. \n\nIf you have any questions about anything, please don't hesitate to ask me. I'd be happy to help! \nTo restart the bot, click here -> /start. \n\nAre you a student or a teacher?", reply_markup=kb.roles_eng)
 
@@ -74,7 +79,17 @@ async def student(callback: CallbackQuery):
     user_histories[user_id].append({"role": "system", "content": "When student asks a question like 'what is...' don't give the answer right away. First ask them questions to understand his/her level of knowledge. And then, using the Socratic method of teaching, gradually explain the topic to them."})
     user_histories[user_id].append({"role": "system", "content": "When you and a student are working on a piece of writing and you see that something in their writing could be improved, such as replacing some words with synonyms or changing the wording to sound better, help them. But don't write for them or tell them directly what to add or change, but guide them so that they can figure out how to improve their writing themselves by asking questions like 'what do you think can be improve in this sentence', or 'try to paraphrase this sentence to make it sound more formal', etc."})
     
-    await Message.answer(text='test')
+    bot_rep
+    
+    if user_lang[user_id] == 1:
+        bot_rep = 'Напиши пожалуйста в каком ты классе и какой предмет/тему ты хочешь обсудить.'
+    elif user_lang[user_id] == 2:
+        bot_rep = 'Қай сыныпта екеніңді және қандай пәнді/тақырыпты талқылағың келетінін жаз.'
+    else:
+        bot_rep = 'Please write down which class you are in and what subject/topic you want to discuss.'
+    
+    user_histories[user_id].append({"role": "assistant", "content": bot_rep})
+    await callback.message.answer(bot_rep)
 
 @router.callback_query(F.data == 'role_teacher')
 async def teacher(callback: CallbackQuery):
@@ -83,7 +98,7 @@ async def teacher(callback: CallbackQuery):
     user_histories[user_id].append({"role": "system", "content": "Your user is a teacher. As a professional teacher help them by giving valuable advices and suggestions on their problems."})
     user_histories[user_id].append({"role": "system", "content": "when you are trying to use inline expressions, it doesn't work. Do not use them"})
     
-    await callback.answer('test')
+    await callback.message.answer('.')
     
 
 @router.message(Generate.text)
