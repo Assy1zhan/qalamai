@@ -83,12 +83,12 @@ async def teacher(callback: CallbackQuery):
     user_histories[user_id].append({"role": "system", "content": "Your user is a teacher. As a professional teacher help them by giving valuable advices and suggestions on their problems."})
     user_histories[user_id].append({"role": "system", "content": "when you are trying to use inline expressions, it doesn't work. Do not use them"})
     
-    await callback.answer('test')
+    await callback.answer(text='test')
     
 
 @router.message(Generate.text)
 async def generate_error(message: Message):
-    await message.answer('Подождите, ваш предыдущий запрос выполняется...')
+    await message.answer(text='Подождите, ваш предыдущий запрос выполняется...')
 
 
 @router.message(F.text)
