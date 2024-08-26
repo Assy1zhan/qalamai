@@ -98,7 +98,17 @@ async def teacher(callback: CallbackQuery):
     user_histories[user_id].append({"role": "system", "content": "Your user is a teacher. As a professional teacher help them by giving valuable advices and suggestions on their problems."})
     user_histories[user_id].append({"role": "system", "content": "when you are trying to use inline expressions, it doesn't work. Do not use them"})
     
-    await callback.message.answer('.')
+    bot_rep
+    
+    if user_lang[user_id] == 1:
+        bot_rep = 'Опишите максимально детально вашу проблему/ситуацию/вопрос, чтобы я мог дать вам наиболее точный ответ.'
+    elif user_lang[user_id] == 2:
+        bot_rep = 'Мәселеңізді, жағдайыңызды немесе сұрағыңызды мүмкіндігінше толықтай сипаттаңыз, сонда мен сізге ең нақты жауап бере аламын.'
+    else:
+        bot_rep = 'Describe your problem/situation/question in as much detail as possible so that I can give you the most accurate answer.'
+    
+    user_histories[user_id].append({"role": "assistant", "content": bot_rep})
+    await callback.message.answer(bot_rep)
     
 
 @router.message(Generate.text)
