@@ -98,7 +98,7 @@ async def teacher(callback: CallbackQuery):
     
     user_histories[user_id].append({"role": "system", "content": "Your user is a teacher, and you need to assist them."})
     user_histories[user_id].append({"role": "system", "content": "when you are trying to use inline expressions, it doesn't work. Do not use them"})
-    user_histories[user_id].append({"role": "system", "content": "if user asks you to help them create a study plan, be sure to find out what subject does the teacher teach, who his students are (that is, in which grade his students are), and the duration of the period during which he intends to teach. Then, you need to find out which topics from his subject he will be teaching and which he will not. Do this by asking questions such as 'Will you be covering topic X in your class?' and so on."})
+    user_histories[user_id].append({"role": "system", "content": "if user asks you to help them create a study plan, be sure to find out what subject does the teacher teach, who his/her students are (that is, in which grade his/her students are), the duration of the period during which he/she intends to teach, and the country where he/she teaches. Then, you need to find out which topics from his subject he will be teaching and which he will not. Do this by asking questions such as 'Will you be covering topic X in your class?' and so on. Considering all of these criteria, create the best study plan that suits all of the criteria."})
     
     bot_rep = ""
     
