@@ -74,10 +74,11 @@ async def eng_lang(callback: CallbackQuery):
 async def student(callback: CallbackQuery):
     user_id = callback.from_user.id
     
-    user_histories[user_id].append({"role": "system", "content": "Your user is a pupil. Consider the grade level your student is currently in and the subjects they want to study in order to adapt to their individual needs. This could include offering additional resources or adjusting the difficulty level of the material based on their progress. If he/she needs to write something or solve something, don't do the work for them, but help them do it themselves, through leading questions or the Socratic method of teaching. Support dialogues that promote understanding, using techniques like Socratic questioning. Periodically quiz student to assess their knowledge, and provide feedback. Recognize the emotional state of student, and respond accordingly (e.g., offering encouragement, motivation, or breaks). If a student asks a question in particular math topic, make sure he/she possesses the basic knowledge needed to solve their problem. "})
+    user_histories[user_id].append({"role": "system", "content": "Your user is a pupil. Consider the grade level your student is currently in and the subjects they want to study in order to adapt to their individual needs. This could include offering additional resources or adjusting the difficulty level of the material based on their progress. If he/she needs to write something or solve something, don't do the work for them, but help them do it themselves, through leading questions or the Socratic method of teaching. Support dialogues that promote understanding, using techniques like Socratic questioning. Periodically quiz student to assess their knowledge, and provide feedback. Recognize the emotional state of student, and respond accordingly (e.g., offering encouragement, motivation, or breaks). If a student asks a question in particular topic, always make sure he/she possesses the basic knowledge needed to solve their problem. "})
     user_histories[user_id].append({"role": "system", "content": "when you are trying to use inline expressions, it doesn't work. Do not use them"})
     user_histories[user_id].append({"role": "system", "content": "When student asks a question like 'what is...' don't give the answer right away. First ask them questions to understand his/her level of knowledge. And then, using the Socratic method of teaching, gradually explain the topic to them."})
     user_histories[user_id].append({"role": "system", "content": "When you and a student are working on a piece of writing and you see that something in their writing could be improved, such as replacing some words with synonyms or changing the wording to sound better, help them. But don't write for them or tell them directly what to add or change, but guide them so that they can figure out how to improve their writing themselves by asking questions like 'what do you think can be improve in this sentence', or 'try to paraphrase this sentence to make it sound more formal', etc."})
+    user_histories[user_id].append({"role": "system", "content": "when you and a student discuss a topic that he is studying, do not go far from the topic. When you and student are discussing math, physics or other STEM subjects, always reinforce theory with practice, that is, every time a student encounters new information, offer him to solve a few problems in order to better grasp the material."})
     
     bot_rep = ""
     
@@ -86,7 +87,7 @@ async def student(callback: CallbackQuery):
     elif user_lang[user_id] == 2:
         bot_rep = "Қай сыныпта екеніңді және қандай пәнді/тақырыпты талқылағың келетінін жаз."
     else:
-        bot_rep = "Please write down which class you are in and what subject/topic you want to discuss."
+        bot_rep = "Please write down which grade you are in and what subject/topic you want to discuss."
     
     user_histories[user_id].append({"role": "assistant", "content": bot_rep})
     await callback.message.answer(bot_rep)
@@ -95,25 +96,33 @@ async def student(callback: CallbackQuery):
 async def teacher(callback: CallbackQuery):
     user_id = callback.from_user.id
     
-    user_histories[user_id].append({"role": "system", "content": "Your user is a teacher. As a professional teacher help them by giving valuable advices and suggestions on their problems."})
+    user_histories[user_id].append({"role": "system", "content": "Your user is a teacher, and you need to assist them."})
     user_histories[user_id].append({"role": "system", "content": "when you are trying to use inline expressions, it doesn't work. Do not use them"})
+    user_histories[user_id].append({"role": "system", "content": "if user asks you to help them create a study plan, be sure to find out what subject does the teacher teach, who his students are (that is, in which grade his students are), and the duration of the period during which he intends to teach. Then, you need to find out which topics from his subject he will be teaching and which he will not. Do this by asking questions such as 'Will you be covering topic X in your class?' and so on."})
     
     bot_rep = ""
     
     if user_lang[user_id] == 1:
-        bot_rep = "Опишите максимально детально вашу проблему/ситуацию/вопрос, чтобы я мог дать вам наиболее точный ответ."
+        bot_rep = "Опишите максимально детально вашу проблему/ситуацию/вопрос, чтобы я мог дать вам наиболее точный ответ. Например: 'Я учитель математики в 9 классе, мне нужно составить план подготовки к гос экзамену.'"
     elif user_lang[user_id] == 2:
-        bot_rep = "Мәселеңізді, жағдайыңызды немесе сұрағыңызды мүмкіндігінше толықтай сипаттаңыз, сонда мен сізге ең нақты жауап бере аламын."
+        bot_rep = "Мәселеңізді, жағдайыңызды немесе сұрағыңызды мүмкіндігінше толықтай сипаттаңыз, сонда мен сізге ең нақты жауап бере аламын. Мысалы: 'Мен 9-сынып математика пәнінің мұғалімімін, мемлекеттік емтиханға дайындық жоспарын жасауым қажет.'"
     else:
-        bot_rep = "Describe your problem/situation/question in as much detail as possible so that I can give you the most accurate answer."
+        bot_rep = "Describe your problem/situation/question in as much detail as possible so that I can give you the most accurate answer. For example: 'I'm a math teacher in the 9th grade, I need to make a plan for preparing for the state exam.'"
     
     user_histories[user_id].append({"role": "assistant", "content": bot_rep})
-    await callback.message.answer(text=bot_rep)
+    await callback.message.answer(bot_rep)
     
 
 @router.message(Generate.text)
 async def generate_error(message: Message):
-    await message.answer('Подождите, ваш предыдущий запрос выполняется...')
+    user_id = message.from_user.id
+    
+    if user_lang[user_id] == 1:
+        await message.answer('Подождите, ваш предыдущий запрос выполняется...')
+    elif user_lang[user_id] == 2:
+        await message.answer('Күте тұрыңыз, сіздің алдыңғы сұрауыңыз орындалып жатыр...')
+    else:
+        await message.answer('Please wait, your previous request is being processed...')
 
 
 @router.message(F.text)
