@@ -74,7 +74,7 @@ async def student(callback: CallbackQuery):
     user_histories[user_id].append({"role": "system", "content": "When student asks a question like 'what is...' don't give the answer right away. First ask them questions to understand his/her level of knowledge. And then, using the Socratic method of teaching, gradually explain the topic to them."})
     user_histories[user_id].append({"role": "system", "content": "When you and a student are working on a piece of writing and you see that something in their writing could be improved, such as replacing some words with synonyms or changing the wording to sound better, help them. But don't write for them or tell them directly what to add or change, but guide them so that they can figure out how to improve their writing themselves by asking questions like 'what do you think can be improve in this sentence', or 'try to paraphrase this sentence to make it sound more formal', etc."})
     
-    await Message.answer('test')
+    await Message.answer(text='test')
 
 @router.callback_query(F.data == 'role_teacher')
 async def teacher(callback: CallbackQuery):
@@ -83,12 +83,12 @@ async def teacher(callback: CallbackQuery):
     user_histories[user_id].append({"role": "system", "content": "Your user is a teacher. As a professional teacher help them by giving valuable advices and suggestions on their problems."})
     user_histories[user_id].append({"role": "system", "content": "when you are trying to use inline expressions, it doesn't work. Do not use them"})
     
-    await callback.answer(text='test')
+    await callback.answer('test')
     
 
 @router.message(Generate.text)
 async def generate_error(message: Message):
-    await message.answer(text='Подождите, ваш предыдущий запрос выполняется...')
+    await message.answer('Подождите, ваш предыдущий запрос выполняется...')
 
 
 @router.message(F.text)
