@@ -1,3 +1,26 @@
-.venv
+# Secrets — NEVER commit
+.env
+*.env
+!.env.example
 
-app/__pycache__
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
