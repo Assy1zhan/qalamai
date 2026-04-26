@@ -37,8 +37,8 @@ The bot keeps a per-user conversation history (in-memory, keyed by Telegram user
 ### Setup
 
 ```bash
-git clone https://github.com/Assy1zhan/qalamai.git
-cd qalamai
+git clone https://github.com/Assy1zhan/qalam-ai.git
+cd qalam-ai
 
 python -m venv venv
 source venv/bin/activate          # macOS / Linux
